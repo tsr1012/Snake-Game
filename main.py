@@ -1,4 +1,5 @@
 import time
+import _tkinter
 from turtle import Screen, Turtle
 from snake import Snake
 from food import Food
@@ -11,20 +12,22 @@ def end_game():
 
 
 scr = Screen()
+root = Screen()._root
 snake = Snake()
 food = Food()
 score_count = ScoreBoard()
 scr.setup(width=600, height=630)
 scr.bgpic("pixil-frame-0.gif")
 scr.title("SlitherIt")
+root.iconbitmap("icon.ico")
 scr.tracer(0)
 scr.listen()
 
 # Keys mapping
-scr.onkey(snake.up, "w")
-scr.onkey(snake.down, "s")
-scr.onkey(snake.left, "a")
-scr.onkey(snake.right, "d")
+scr.onkey(snake.up, "Up")
+scr.onkey(snake.down, "Down")
+scr.onkey(snake.left, "Left")
+scr.onkey(snake.right, "Right")
 scr.onkey(end_game, "Escape")
 game_is_on = True
 
@@ -38,7 +41,10 @@ game_is_on = True
 while game_is_on:
     scr.update()
     time.sleep(0.15)
-    snake.move_snake()
+    try:
+        snake.move_snake()
+    except _tkinter.TclError:
+        end_game()
 
     # Detecting collision with food
     if snake.snake_head.distance(food) < 15:
